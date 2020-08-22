@@ -13,16 +13,6 @@ export default class MovieService {
     return body;
   };
 
-  async getAllFilm () {
-    const res = await this.getResource('/discover/movie?api_key=5db9ecacd3b131726f122eeed53145c2');
-    return res.results;
-  }
-
-  async getFilm (id) {
-    const res = await this.getResource(`/discover/movie/${id}?api_key=5db9ecacd3b131726f122eeed53145c2`);
-    return res.results;
-  }
-
   async getSearchFilm (find) {
     const res = await this.getResource(`/search/movie?api_key=5db9ecacd3b131726f122eeed53145c2&query=${find}`);
     return res.results;
