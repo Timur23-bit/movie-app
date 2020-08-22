@@ -51,7 +51,7 @@ body {
     color:white!important;
 }
 .card-film__owerview {
-   padding: 12px 20px;
+   padding: 5px 20px;
 }
 
 .ant-layout-content {
@@ -98,4 +98,245 @@ body {
     padding: 2px 4px 3px 5px;
     margin-right: 8px;
     margin-bottom: 7px;
+}
+
+.example {
+    margin: 0 45%;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+
+    padding: 30px 50px;
+    margin-top: 40vh;
+}
+.example {
+    background: rgba(255,255,255,0.08);
+}
+
+.ant-alert {
+    width: 50%;
+    margin: 0 auto!important;
+    padding-top: 10px!important;
+    margin-top: 400px!important;
+}
+.ant-alert-message {
+    display: flex;
+    text-align: center;
+}
+.ant-alert-description {
+    text-align: center;
+}
+
+.ant-input-search {
+    margin-top: 17px;
+    margin-left: 38px;
+    padding-right: 46px!important;
+}
+
+.no-poster {
+    display: flex;
+    background-color: whitesmoke;
+    width: 183px;
+    height: 279px;
+    align-items: center;
+    justify-content: center;
+}
+
+.range {
+    appearance: none;
+    height: 28px;
+    grid-column: 1;
+    grid-row: 1;
+    width: 280px;
+}
+
+.range::-webkit-slider-thumb {
+    appearance: none;
+}
+
+.no-poster h1 {
+    color: #1890FF;
+}
+
+.overview__rating {
+    display: grid;
+    position: absolute;
+    height: 15px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    bottom: 30px;
+}
+
+.owerview {
+    position: relative;
+}
+
+.stars-container {
+    display: flex;
+    grid-column: 1;
+    grid-row: 1;
+    background: none;
+}
+
+.star {
+    width: 28px;
+}
+.vote {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border: 2px solid gold;
+    border-radius: 50%;
+    top:8px;
+    right: 5px;
+}
+
+@media (min-width: 320px) and (max-width: 1147px){
+    html {
+        background-color: whitesmoke;
+    }
+
+    body {
+        width: 100%!important;
+        margin: 0 auto!important;
+    }
+
+    .ant-list {
+        padding-right: 50px!important;
+    }
+
+    .ant-pagination {
+        width: 100%;
+        display:flex;
+        justify-content: center;
+    }
+
+    .ant-list-items {
+        display: block;
+    }
+
+    .layout {
+        min-height: 1050px!important;
+        max-height: 100%!important;
+        background-color: #FFF!important;
+
+    }
+
+    .card-film {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        margin-top:19px;
+        margin-bottom: 17px;
+        margin-left: 25px;
+        box-shadow: 0 0 10px #cac4c4;
+    }
+
+    .ant-input-search {
+        width: 100%!important;
+        margin-top: 17px;
+        margin-left: 25px;
+    }
+
+    .ant-layout-content {
+        padding-right: 0!important;
+    }
+
+    .card-film__poster {
+        width: 60px;
+        height: 91px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+
+    .no-poster {
+        display: flex;
+        background-color: whitesmoke;
+        width: 60px;
+        height: 91px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .card-film__owerview {
+        padding: 5px 10px;
+    }
+
+    .owerview__date {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 12px;
+        display: flex;
+        align-items: center;
+        color: #827E7E;
+        margin-left: 68px;
+        margin-bottom: 15px;
+        justify-content: space-between;
+    }
+
+    .owerview__genre {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 7px;
+        margin-left: 68px;
+    }
+
+    .owerview__title {
+        margin-left: 68px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20px;
+        line-height: 28px;
+    }
+
+    .overview__rating {
+        display: grid;
+        height: 15px;
+        position: relative;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        margin-top: 50px;
+    }
+
+    .owerview {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .stars-container {
+        display: flex;
+        grid-column: 1;
+        grid-row: 1;
+        background: none;
+    }
+
+    .range {
+        appearance: none;
+        height: 28px;
+        grid-column: 1;
+        grid-row: 1;
+        width: 263px;
+    }
+
+    .star {
+        width: 26.5px;
+    }
+
+    .vote {
+        position:relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+        border: 2px solid gold;
+        border-radius: 50%;
+        top: 0;
+    }
 }
