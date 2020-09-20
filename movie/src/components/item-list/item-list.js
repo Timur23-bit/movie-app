@@ -1,22 +1,10 @@
 import React, { Component } from 'react';
-import { List, Alert, Input } from 'antd';
+import { List, Input, Rate, Pagination } from 'antd';
 import { format } from 'date-fns'
 import MovieService from '../../services/movie-service';
 import Spinn from '../spin';
-import logo from '../logo/star.png';
-
-const { Search } = Input;
-
-function ErrorMessag () {
-  return (
-    <Alert
-      message="NOT FOUND"
-      description="Not found this keyword"
-      type="error"
-      showIcon
-    />
-  )
-}
+import logoKenny from '../logo/Кени.png';
+import ErrorMessag from '../errorMessage';
 
 export default class ItemList extends Component{
 
@@ -26,7 +14,9 @@ export default class ItemList extends Component{
     returnMovie: [],
     genres: [],
     loading: true,
-    error: false
+    error: false,
+    netWork:true,
+    pageTotal: null
   };
 
   constructor() {
@@ -35,23 +25,35 @@ export default class ItemList extends Component{
     this.getSearchFilm();
   }
 
-  onError = () => {
-    this.setState({
-      error: true,
-      loading:false
-    });
+  onError = (e) => {
+    if (e.message === "Failed to fetch" || e.message === "NetworkError when attempting to fetch resource") {
+      this.setState({
+        error: true,
+        netWork: false,
+        loading: false
+      });
+    } else {
+      this.setState({
+        error: true,
+        loading: false,
+        netWork: true
+      });
+    }
   };
 
-  getSearchFilm = (find='return') => {
+  getSearchFilm = (find='return', page=1) => {
     this.movieService
-      .getSearchFilm(find)
+      // eslint-disable-next-line no-param-reassign
+      .getSearchFilm(find,page)
       .then((film) => {
-        if (film.length === 0) {
-          throw new Error();
+        if (film.results.length === 0 || film.errorCode) {
+          throw new Error('art');
         } else {
           this.setState({
-            returnMovie: film,
-            loading: false
+            returnMovie: film.results,
+            loading: false,
+            error: false,
+            pageTotal: film.total_pages
           })
         }
       })
@@ -83,7 +85,7 @@ export default class ItemList extends Component{
   };
 
   releaseDate (date) {
-    if (date.length === 0){
+    if (!date){
       return 'Фильм ещё неышел';
     }
       return format(new Date(date), 'MMMM d, yyyy');
@@ -107,13 +109,26 @@ export default class ItemList extends Component{
 
   imgPoster (item) {
     if (item.poster_path === null) {
+      if (window.innerWidth < 1147) {
+        return (
+          <img
+            width={60}
+            height={91}
+            alt="logo"
+            src={logoKenny}
+          />
+        )
+      }
       return (
-        <div
-          className='no-poster'>
-          <h1>Нет обложки</h1>
-        </div>
+        <img
+          width={183}
+          height={279}
+          alt="logo"
+          src={logoKenny}
+        />
       )
-    } else if (window.innerWidth < 1147) {
+
+    } if (window.innerWidth < 1147) {
       return (
         <img
           width={60}
@@ -124,24 +139,71 @@ export default class ItemList extends Component{
       )
     }
 
-      return (
-        <img
+    return (
+      <img
         width={183}
         height={279}
         alt="logo"
         src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-        />
-      )
+      />
+    )
   }
 
-  rangeSlider (value) {
+  // eslint-disable-next-line consistent-return
+  searchLine (page=1) {
+    const input = document.querySelector('.input');
+    if (input.value) {
+      this.getSearchFilm(input.value, page)
+    } else {
+      this.setState({
+        error: true,
+        loading: false,
+        netWork: true
+      });
+    }
+  }
 
+  debounce(func, wait, immediate) {
+    let timeout;
+
+    return function executedFunction() {
+      const context = this;
+      // eslint-disable-next-line prefer-rest-params
+      const args = arguments;
+
+      // eslint-disable-next-line func-names
+      const later = function () {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+
+      const callNow = immediate && !timeout;
+
+      clearTimeout(timeout);
+
+      timeout = setTimeout(later, wait);
+
+      if (callNow) func.apply(context, args);
+    };
+  }
+  
+  SearchInput () {
+    return (
+      <div
+        className="container_input">
+        <Input
+          className="input"
+          placeholder="Search"
+          onChange={()=>{}}
+          onKeyUp={this.debounce(this.searchLine.bind(this), 1000)}
+        />
+      </div>
+    )
   }
 
   // eslint-disable-next-line react/sort-comp
-  conten (state) {
+  Content (state) {
     const { returnMovie, genres} = state;
-    console.log(returnMovie);
     // eslint-disable-next-line no-use-before-define
     const itemLi = new ItemList();
 
@@ -150,24 +212,11 @@ export default class ItemList extends Component{
       arrGenres.push(itemLi.getGenresNames(item.genre_ids, genres))
     });
 
-
     return (
       <div>
-        <Search
-          placeholder="input search text"
-          enterButton="Search"
-          size="large"
-          onSearch={value => {
-            this.getSearchFilm(value)
-          }}
-        />
         <List
           itemLayout="vertical"
           size="default"
-          pagination={{
-            pageSize: 6,
-            size: 'default'
-          }}
           dataSource={returnMovie}
           renderItem={(item, i) => (
             <div
@@ -198,33 +247,11 @@ export default class ItemList extends Component{
                   {this.minify(item.overview,150)}
                 </div>
                 <div className='overview__rating'>
-                  <input
-                    style={{
-                      background: `linear-gradient(90deg, gold ${item.vote_average * 10}%, white ${item.vote_average * 10}%)`,
-                    }}
-                    className='range'
-                    type='range'
-                    min='0'
-                    max='100'
-                    step='1'
-                    value={item.vote_average*10}
-                    onChange={this.rangeSlider}
-                  />
                   <div
                     className='stars-container'>
-                    <img className='star' src={logo} alt='art'/>
-                    <img className='star' src={logo} alt='art'/>
-                    <img className='star' src={logo} alt='art'/>
-                    <img className='star' src={logo} alt='art'/>
-                    <img className='star' src={logo} alt='art'/>
-                    <img className='star' src={logo} alt='art'/>
-                    <img className='star' src={logo} alt='art'/>
-                    <img className='star' src={logo} alt='art'/>
-                    <img className='star' src={logo} alt='art'/>
-                    <img className='star' src={logo} alt='art'/>
+                    <Rate allowHalf defaultValue={item.vote_average} count={10}/>
                   </div>
                 </div>
-
               </div>
             </div>
           )}
@@ -234,20 +261,34 @@ export default class ItemList extends Component{
   }
 
   render () {
-    const { loading, error} = this.state;
+    const {loading, error, netWork, pageTotal} = this.state;
 
     const hasData = !(loading || error);
 
-    const errorMessage = error ? <ErrorMessag /> : null;
+    const input = this.SearchInput();
+    const errorMessage = error ? <ErrorMessag netWork={netWork}/> : null;
     const spinner = loading && !error ? <Spinn/> : null;
-    const content = hasData ? this.conten(this.state) : null;
-
-
+    const content = hasData ? this.Content(this.state) : null;
+    const pagination = !error ? <Pagination
+                          defaultCurrent={1}
+                          showSizeChanger={false}
+                          pageSize={1}
+                          onChange={page => {
+                            this.searchLine(page)
+                          }
+                          }
+                          total={pageTotal}
+                        /> : null;
     return (
       <div>
+        {input}
         {errorMessage}
         {spinner}
         {content}
+       <div
+         className='pagination'>
+         {pagination}
+       </div>
       </div>
     )
   }

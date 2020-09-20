@@ -5,17 +5,17 @@ export default class MovieService {
   async getResource (url) {
     // eslint-disable-next-line no-underscore-dangle
     const res = await fetch(`${this._apiBase}${url}`);
-
-    if (!res.ok) {
+    if (res.status !== 200) {
       throw new Error(`Could not fetch ${url}, recieved ${res.status}`)
     }
     const body = await res.json();
     return body;
   };
 
-  async getSearchFilm (find) {
-    const res = await this.getResource(`/search/movie?api_key=5db9ecacd3b131726f122eeed53145c2&query=${find}`);
-    return res.results;
+  async getSearchFilm (find, page) {
+    const res = await this.getResource(`/search/movie?api_key=5db9ecacd3b131726f122eeed53145c2&query=${find}&page=${page}`);
+    console.log(res);
+    return res;
   }
 
   async getGenres () {
