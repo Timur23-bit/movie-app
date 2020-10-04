@@ -22,4 +22,14 @@ export default class MovieService {
     const res = await this.getResource(`/genre/movie/list?api_key=5db9ecacd3b131726f122eeed53145c2`);
     return res;
   }
+
+  async getGuestSession () {
+    const res = await this.getResource('/authentication/guest_session/new?api_key=5db9ecacd3b131726f122eeed53145c2');
+    return res;
+  }
+
+  async getRatedGuestSession (sessionId) {
+    const res = await this.getResource(`/guest_session/${sessionId}/rated/movies?api_key=5db9ecacd3b131726f122eeed53145c2&language=en-US&sort_by=created_at.asc`);
+    return res;
+  }
 }

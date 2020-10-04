@@ -127,7 +127,7 @@ body {
     align-items: center;
     width: 30px;
     height: 30px;
-    border: 2px solid gold;
+
     border-radius: 50%;
     right:0px;
 }
@@ -142,6 +142,23 @@ body {
     width: 50%;
     margin: 25px 350px;
 }
+
+.red {
+    border: 2px solid #E90000;
+}
+
+.orange {
+    border: 2px solid #E97E00;
+}
+
+.yellow {
+    border: 2px solid #E9D100;
+}
+
+.green {
+    border: 2px solid #66E900;
+}
+
 
 @media (min-width: 320px) and (max-width: 1147px){
     html {
@@ -264,5 +281,20 @@ body {
     .pagination {
         width: 50%;
         margin: 25px auto;
+    }
+    .red {
+        border: 2px solid #E90000;
+    }
+
+    .orange {
+        border: 2px solid #E97E00;
+    }
+
+    .yellow {
+        border: 2px solid #E9D100;
+    }
+
+    .green {
+        border: 2px solid #66E900;
     }
 }

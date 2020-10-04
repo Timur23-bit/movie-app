@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { List, Input, Rate, Pagination } from 'antd';
-import { format } from 'date-fns'
+import { List, Input, Pagination } from 'antd';
+import PropTypes from 'prop-types';
 import MovieService from '../../services/movie-service';
 import Spinn from '../spin';
-import logoKenny from '../logo/Кени.png';
 import ErrorMessag from '../errorMessage';
+import Item from '../item';
+import { MovieConsumer } from '../movie-genres/movie-genres'
+
 
 export default class ItemList extends Component{
 
@@ -12,17 +14,18 @@ export default class ItemList extends Component{
 
   state = {
     returnMovie: [],
-    genres: [],
+    rated:[],
     loading: true,
     error: false,
     netWork:true,
-    pageTotal: null
+    pageTotal: null,
+    sessionId: null,
   };
 
   constructor() {
     super();
-    this.getGenres();
     this.getSearchFilm();
+    this.getGuestSession();
   }
 
   onError = (e) => {
@@ -60,16 +63,19 @@ export default class ItemList extends Component{
       .catch(this.onError)
   };
 
-  getGenres () {
+  getRatedGuestSession (sessionId) {
     this.movieService
-      .getGenres()
-      .then((genre) => {
+      .getRatedGuestSession(sessionId)
+      .then((res) => {
         this.setState({
-          genres: genre.genres
+          rated: res.results,
+          loading: false,
+          error: false,
+          pageTotal: res.total_pages
         })
       })
   }
-
+  
   getGenresNames = (ids=[], genres=[]) => {
     const arr = [];
     ids.map((item) => {
@@ -84,73 +90,8 @@ export default class ItemList extends Component{
     return arr;
   };
 
-  releaseDate (date) {
-    if (!date){
-      return 'Фильм ещё неышел';
-    }
-      return format(new Date(date), 'MMMM d, yyyy');
-  }
-
-  minify(text, length) {
-    return `${text.slice(0, text.indexOf(' ', length))  }...`;
-  }
-
-  genres (arrGenres) {
-    return arrGenres.map( xing => {
-      return (
-        <div
-          key={Math.floor(Math.random()*23*1000)}
-          className='genre'>
-          {xing}
-        </div>
-      )
-    })
-  }
-
-  imgPoster (item) {
-    if (item.poster_path === null) {
-      if (window.innerWidth < 1147) {
-        return (
-          <img
-            width={60}
-            height={91}
-            alt="logo"
-            src={logoKenny}
-          />
-        )
-      }
-      return (
-        <img
-          width={183}
-          height={279}
-          alt="logo"
-          src={logoKenny}
-        />
-      )
-
-    } if (window.innerWidth < 1147) {
-      return (
-        <img
-          width={60}
-          height={91}
-          alt="logo"
-          src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-        />
-      )
-    }
-
-    return (
-      <img
-        width={183}
-        height={279}
-        alt="logo"
-        src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-      />
-    )
-  }
-
-  // eslint-disable-next-line consistent-return
-  searchLine (page=1) {
+  // eslint-disable-next-line consistent-return,react/sort-comp
+  searchLine (page= 1) {
     const input = document.querySelector('.input');
     if (input.value) {
       this.getSearchFilm(input.value, page)
@@ -158,10 +99,20 @@ export default class ItemList extends Component{
       this.setState({
         error: true,
         loading: false,
-        netWork: true
+        netWork: true,
       });
     }
   }
+
+  getGuestSession = () => {
+    this.movieService
+      .getGuestSession()
+      .then((res) => {
+        this.setState({
+          sessionId: res.guest_session_id,
+        });
+      })
+  };
 
   debounce(func, wait, immediate) {
     let timeout;
@@ -202,74 +153,56 @@ export default class ItemList extends Component{
   }
 
   // eslint-disable-next-line react/sort-comp
-  Content (state) {
-    const { returnMovie, genres} = state;
+  content (state, search) {
+    const { returnMovie, rated, sessionId } = state;
     // eslint-disable-next-line no-use-before-define
-    const itemLi = new ItemList();
-
-    const arrGenres = [];
-    returnMovie.forEach((item) => {
-      arrGenres.push(itemLi.getGenresNames(item.genre_ids, genres))
-    });
+    let data = returnMovie;
+    if (!search) {
+      this.getRatedGuestSession(sessionId);
+      data = rated;
+    }
 
     return (
       <div>
-        <List
-          itemLayout="vertical"
-          size="default"
-          dataSource={returnMovie}
-          renderItem={(item, i) => (
-            <div
-              className='card-film card__film'>
-              <div
-                className='card-film__poster'>
-                {this.imgPoster(item)}
-              </div>
-              <div
-                className='card-film__owerview owerview'>
-                <div
-                  className='owerview__title'>
-                  <h1>{item.title}</h1>
-                </div>
-                <div
-                  className='owerview__date'>
-                  {this.releaseDate(item.release_date)}
-                  <div className='vote'>
-                    {item.vote_average}
-                  </div>
-                </div>
-                <div
-                  className='owerview__genre'>
-                  {this.genres(arrGenres[i])}
-                </div>
-                <div
-                  className='owerview__decription'>
-                  {this.minify(item.overview,150)}
-                </div>
-                <div className='overview__rating'>
-                  <div
-                    className='stars-container'>
-                    <Rate allowHalf defaultValue={item.vote_average} count={10}/>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        />
+        <MovieConsumer>
+          { (genres) => {
+            return (
+            <List
+              itemLayout="vertical"
+              size="default"
+              dataSource={data}
+              renderItem={(item, i) => {
+                return (
+                  <Item
+                    item={item}
+                    i={i}
+                    genres={genres}
+                    returnMovie={returnMovie}
+                    getGenresName={this.getGenresNames}
+                    sessionId={sessionId}
+                  />
+                )
+              }
+              }/>
+            )
+          }
+
+          }
+        </MovieConsumer>
       </div>
     )
   }
 
   render () {
     const {loading, error, netWork, pageTotal} = this.state;
-
+    const {search} = this.props;
     const hasData = !(loading || error);
 
-    const input = this.SearchInput();
+    const input = search ? this.SearchInput(): null;
     const errorMessage = error ? <ErrorMessag netWork={netWork}/> : null;
     const spinner = loading && !error ? <Spinn/> : null;
-    const content = hasData ? this.Content(this.state) : null;
-    const pagination = !error ? <Pagination
+    const content = hasData ? this.content(this.state, search) : null;
+    const pagination = !(error && loading) ? <Pagination
                           defaultCurrent={1}
                           showSizeChanger={false}
                           pageSize={1}
@@ -293,3 +226,11 @@ export default class ItemList extends Component{
     )
   }
 }
+
+ItemList.defaultProps = {
+  search: true
+};
+
+ItemList.propTypes = {
+  search: PropTypes.bool,
+};
