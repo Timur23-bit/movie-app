@@ -3,24 +3,25 @@ html {
 }
 
 body {
-    width: 1147px!important;
+    width: 1010px!important;
     margin: 0 auto!important;
+    height: 100%;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 22px;
 }
 
-.layout {
-    min-height: 1050px!important;
-    max-height: 100%!important;
-    background-color: #FFF!important;
+#root {
+ background-color: white;
 }
 
 .card-film {
-    width: 46%;
-    height: 100%;
     display: flex;
-    margin-top:19px;
-    margin-bottom: 17px;
-    margin-left: 38px;
     box-shadow: 0 0 10px #cac4c4;
+    margin: 0px 0px 30px 34px;
+    width: 454px;
+    height: 281px;
 }
 
 .ant-list-items {
@@ -29,45 +30,68 @@ body {
 }
 
 .ant-pagination {
-
     margin: 0 auto!important;
 }
 
 
-.card-film__owerview {
-   padding: 5px 20px;
+.card-film__overview {
+    position: relative;
 }
 
 .ant-layout-content {
-    padding: 0!important;
-    padding-right: 34px!important;
+
+}
+.ant-tabs-ink-bar {
+    width: 64px;
 }
 
+.ant-tabs-tab {
+    width: 64px!important;
+    justify-content: center;
+    margin: 0!important;
+}
 
-.owerview__date {
+.overview__title {
+    display: flex;
+    margin-left: 20px;
+    margin-top: 12px;
+    margin-right: 45px;
+    justify-content: space-between;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 28px;
+}
+
+.overview__date {
     position: relative;
     font-style: normal;
     font-weight: normal;
+    margin-left: 20px;
     font-size: 12px;
     line-height: 12px;
     display: flex;
     align-items: center;
     color: #827E7E;
-    margin-bottom: 15px;
     justify-content: space-between;
+    margin-bottom: 7px;
 }
 
-.owerview__description{
+.overview__description{
     font-style: normal;
+    margin-left: 20px;
+    margin-top: 7px;
+    margin-right: 20px;
     font-weight: normal;
     font-size: 12px;
     line-height: 22px;
 }
 
-.owerview__genre {
+.overview__genre {
     display: flex;
+    margin-left: 20px;
     flex-wrap: wrap;
-    margin-top: 7px;
+    height: 40px;
 }
 
 .genre {
@@ -85,19 +109,15 @@ body {
     color: rgba(0, 0, 0, 0.65);
     padding: 2px 4px 3px 5px;
     margin-right: 8px;
-    margin-bottom: 7px;
+    margin-bottom: 8px;
 }
 
 .example {
     margin: 0 45%;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(255,255,255,0.08);
     border-radius: 4px;
-
     padding: 30px 50px;
     margin-top: 40vh;
-}
-.example {
-    background: rgba(255,255,255,0.08);
 }
 
 .ant-alert {
@@ -114,10 +134,18 @@ body {
     text-align: center;
 }
 
-.ant-input-search {
-    margin-top: 17px;
-    margin-left: 38px;
-    padding-right: 46px!important;
+.ant-input {
+    height: 40px!important;
+    border: 1px solid #D9D9D9!important;
+    box-sizing: border-box!important;
+    border-radius: 4px!important;
+}
+
+.container_input {
+    height: 40px;
+    margin-bottom: 32px;
+    margin-right: 34px;
+    margin-left: 34px;
 }
 
 .vote {
@@ -127,20 +155,67 @@ body {
     align-items: center;
     width: 30px;
     height: 30px;
-
+    border: 2px solid gold;
     border-radius: 50%;
-    right:0px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 22px;
+    top: 12px;
+    right: 9px;
 }
 
-.container_input {
-    margin-top: 15px;
-    margin-left: 36px;
-    margin-right: 10px;
+.overview__rating {
+    width: 239px;
+    height: 46px;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
+
+.ant-rate-star {
+    width: 15px;
+}
+
+svg {
+    width: 15px;
 }
 
 .pagination {
     width: 50%;
     margin: 25px 350px;
+}
+
+.ant-tabs-top > .ant-tabs-nav::before,
+.ant-tabs-bottom > .ant-tabs-nav::before,
+.ant-tabs-top > div > .ant-tabs-nav::before,
+.ant-tabs-bottom > div > .ant-tabs-nav::before {
+    border-bottom: none!important;
+}
+
+.ant-pagination-item-link,
+.ant-pagination-item {
+    border: none!important;
+    border-radius: 4px!important;
+}
+
+.ant-pagination-item-link :hover,
+.ant-pagination-item :hover {
+    background-color: #1890FF!important;
+    color: white!important;
+    border-radius: 4px!important;
+}
+.ant-pagination-item-link ::selection,
+.ant-pagination-item ::selection {
+    background-color: #1890FF!important;
+    color: white!important;
+    border-radius: 4px!important;
+}
+
+.ant-pagination-item-active {
+    background-color: #1890FF!important;
+    color: white!important;
+    border-radius: 4px!important;
 }
 
 .red {
@@ -160,7 +235,11 @@ body {
 }
 
 
-@media (min-width: 320px) and (max-width: 1147px){
+@media (min-width: 320px) and (max-width: 1010px){
+    #root {
+        background-color: white;
+    }
+
     html {
         background-color: whitesmoke;
     }
@@ -168,10 +247,10 @@ body {
     body {
         width: 100%!important;
         margin: 0 auto!important;
-    }
-
-    .ant-list {
-        padding-right: 50px!important;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 22px;
     }
 
     .ant-pagination {
@@ -180,32 +259,31 @@ body {
         justify-content: center;
     }
 
-    .ant-list-items {
-        display: block;
+    .ant-tabs-ink-bar {
+        width: 64px!important;
     }
 
-    .layout {
-        min-height: 1050px!important;
-        max-height: 100%!important;
-        background-color: #FFF!important;
-
+    .ant-tabs-tab {
+        width: 64px!important;
+        justify-content: center;
+        margin: 0!important;
     }
 
-    .card-film {
-        position: relative;
+    .overview {
         width: 100%;
-        height: 100%;
+    }
+
+    .card__film {
+        position: relative;
+        width: 454px;
+        height: 281px;
         display: flex;
-        margin-top:19px;
-        margin-bottom: 17px;
-        margin-left: 25px;
         box-shadow: 0 0 10px #cac4c4;
+        margin: 20px auto;
     }
 
     .ant-input-search {
         width: 100%!important;
-        margin-top: 17px;
-        margin-left: 25px;
     }
 
     .ant-layout-content {
@@ -216,46 +294,42 @@ body {
         width: 60px;
         height: 91px;
         position: absolute;
-        top: 10px;
+        top: 6px;
         left: 10px;
     }
 
-    .no-poster {
-        display: flex;
-        background-color: whitesmoke;
-        width: 60px;
-        height: 91px;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .card-film__owerview {
-        padding: 5px 10px;
-    }
-
-    .owerview__date {
+    .overview__date {
         position: relative;
         font-style: normal;
         font-weight: normal;
         font-size: 12px;
-        line-height: 12px;
+        line-height: 22px;
         display: flex;
         align-items: center;
         color: #827E7E;
-        margin-left: 68px;
-        margin-bottom: 15px;
-        justify-content: space-between;
+        margin-left: 83px;
+        margin-bottom: 7px;
     }
 
-    .owerview__genre {
+    .overview__genre {
         display: flex;
         flex-wrap: wrap;
-        margin-top: 7px;
-        margin-left: 68px;
+        margin-left: 83px;
+        margin-bottom: 7px!important;
     }
 
-    .owerview__title {
-        margin-left: 68px;
+    .overview__description {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 22px;
+        margin: 7px 10px 46px;
+    }
+
+    .overview__title {
+        display: flex;
+        justify-content: space-between;
+        margin-left: 83px;
         font-style: normal;
         font-weight: normal;
         font-size: 20px;
@@ -263,7 +337,6 @@ body {
     }
 
     .vote {
-        position:relative;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -271,17 +344,100 @@ body {
         height: 30px;
         border: 2px solid gold;
         border-radius: 50%;
-        top: 0;
+        margin-top: 5px;
+        margin-right: 8px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 22px;
     }
+
+    .overview__rating {
+        width: 239px;
+        height: 46px;
+        position: absolute;
+        right: 0px;
+        bottom: 0px;
+    }
+
+    .ant-rate-star {
+        width: 15px;
+    }
+
+    svg {
+        width: 15px;
+    }
+
+    .ant-input {
+        height: 40px!important;
+        border: 1px solid #D9D9D9!important;
+        box-sizing: border-box!important;
+        border-radius: 4px!important;
+    }
+
     .container_input {
-        margin-top: 15px;
-        margin-left: 24px;
-        margin-right: 24px;
+        height: 40px;
+        margin-bottom: 10px;
+        margin-right: 16px;
+        margin-left: 16px;
+    }
+    .ant-tabs-nav::before {
+        position: relative!important;
+        content: none;
     }
     .pagination {
         width: 50%;
         margin: 25px auto;
     }
+
+    .ant-tabs-top > .ant-tabs-nav::before,
+    .ant-tabs-bottom > .ant-tabs-nav::before,
+    .ant-tabs-top > div > .ant-tabs-nav::before,
+    .ant-tabs-bottom > div > .ant-tabs-nav::before {
+        border-bottom: none!important;
+    }
+
+    .ant-pagination-item-link,
+    .ant-pagination-item {
+        border: none!important;
+        border-radius: 4px!important;
+        height: 22px!important;
+        width: 22px!important;
+    }
+
+
+    .ant-pagination-item-link ::selection,
+    .ant-pagination-item ::selection {
+        background-color: #1890FF!important;
+        color: white!important;
+        border-radius: 4px!important;
+    }
+
+    .ant-pagination-item-active, .ant-pagination-item-active a {
+        background-color: #1890FF!important;
+        color: white!important;
+        border-radius: 4px!important;
+    }
+
+    .ant-pagination-next,
+    .ant-pagination-prev {
+        border: none!important;
+        border-radius: 4px!important;
+    }
+
+    .ant-pagination-prev:hover,
+    .ant-pagination-prev:hover .ant-pagination-item-link,
+    .ant-pagination-next:hover,
+    .ant-pagination-next:hover .ant-pagination-item-link,
+    .ant-pagination-jump-prev:hover,
+    .ant-pagination-jump-next:hover,
+    .ant-pagination-jump-prev:hover .ant-pagination-item-link,
+    .ant-pagination-jump-next:hover .ant-pagination-item-link {
+        background: #1890FF!important;
+        color: white!important;
+        border-radius: 4px!important;
+    }
+
     .red {
         border: 2px solid #E90000;
     }

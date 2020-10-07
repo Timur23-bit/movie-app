@@ -1,11 +1,11 @@
 
-export default class MovieService {
+class MovieService {
   _apiBase = 'https://api.themoviedb.org/3';
 
   async getResource (url) {
     // eslint-disable-next-line no-underscore-dangle
     const res = await fetch(`${this._apiBase}${url}`);
-    if (res.status !== 200) {
+    if (!res.status) {
       throw new Error(`Could not fetch ${url}, recieved ${res.status}`)
     }
     const body = await res.json();
@@ -14,7 +14,6 @@ export default class MovieService {
 
   async getSearchFilm (find, page) {
     const res = await this.getResource(`/search/movie?api_key=5db9ecacd3b131726f122eeed53145c2&query=${find}&page=${page}`);
-    console.log(res);
     return res;
   }
 
@@ -33,3 +32,7 @@ export default class MovieService {
     return res;
   }
 }
+
+const movies = new MovieService();
+
+export default movies;

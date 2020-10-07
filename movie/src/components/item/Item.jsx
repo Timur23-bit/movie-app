@@ -6,14 +6,12 @@ import logoKenny from '../logo/Кени.png';
 
 export default class Item extends Component{
 
-  state = {
-    voteValue: 0,
-  };
+  state={};
 
   // eslint-disable-next-line react/sort-comp
   imgPoster (item) {
     if (item.poster_path === null) {
-      if (window.innerWidth < 1147) {
+      if (window.innerWidth <= 1010) {
         return (
           <img
             width={60}
@@ -32,13 +30,13 @@ export default class Item extends Component{
         />
       )
 
-    } if (window.innerWidth < 1147) {
+    } if (window.innerWidth <= 1010) {
       return (
         <img
           width={60}
           height={91}
           alt="logo"
-          src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+          src={`https://image.tmdb.org/t/p/w200${item.poster_path}`}
         />
       )
     }
@@ -48,20 +46,23 @@ export default class Item extends Component{
         width={183}
         height={279}
         alt="logo"
-        src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+        src={`https://image.tmdb.org/t/p/w200${item.poster_path}`}
       />
     )
   }
 
   releaseDate (date) {
     if (!date){
-      return 'Фильм ещё неышел';
+      return 'Фильм ещё не вышел';
     }
     return format(new Date(date), 'MMMM d, yyyy');
   }
 
-  minify(text, length) {
-    return `${text.slice(0, text.indexOf(' ', length))  }...`;
+  minify(text) {
+    if (window.innerWidth < 1011) {
+      return `${text.slice(0, text.indexOf(' ', 400))}...`;
+    }
+    return `${text.slice(0, text.indexOf(' ', 150))}...`;
   }
 
   genres (arrGenres) {
@@ -90,12 +91,9 @@ export default class Item extends Component{
   }
 
   render () {
-    const { voteValue } = this.state;
-    const { item, i, genres, returnMovie, getGenresName, sessionId } = this.props;
+    const { item, i, genres, returnMovie, getGenresName } = this.props;
 
     const arrGenres = [];
-
-
 
     // eslint-disable-next-line no-shadow
     returnMovie.forEach((item) => {
@@ -103,46 +101,41 @@ export default class Item extends Component{
     });
 
     return (
-      <div
-      className='card-film card__film'>
-      <div
-        className='card-film__poster'>
-        {this.imgPoster(item)}
-      </div>
-      <div
-        className='card-film__owerview owerview'>
+      <li
+        className='card-film card__film'>
         <div
-          className='owerview__title'>
-          <h1>{item.title}</h1>
+          className='card-film__poster'>
+          {this.imgPoster(item)}
         </div>
         <div
-          className='owerview__date'>
-          {this.releaseDate(item.release_date)}
+          className='card-film__overview overview'>
           <div
-            className={`vote ${this.getColor(voteValue)}`}
-          >
-            {voteValue}
+            className='overview__title'>
+            <h5>{item.title}</h5>
+            <div
+              className={`vote ${this.getColor(item.vote_average)}`}
+            >
+              {item.vote_average}
+            </div>
           </div>
-        </div>
-        <div
-          className='owerview__genre'>
-          {this.genres(arrGenres[i])}
-        </div>
-        <div
-          className='owerview__decription'>
-          {this.minify(item.overview,150)}
-        </div>
-        <div className='overview__rating'>
           <div
-            className='stars-container'>
+            className='overview__date'>
+            {this.releaseDate(item.release_date)}
+          </div>
+          <div
+            className='overview__genre'>
+            {this.genres(arrGenres[i])}
+          </div>
+          <div
+            className='overview__description'>
+            {this.minify(item.overview)}
+          </div>
+          <div className='overview__rating'>
             <Rate
               allowHalf
               count={10}
               onChange={(e) => {
-                this.setState({
-                  voteValue: e
-                });
-                fetch(`https://api.themoviedb.org/3/movie/${item.id}/rating?api_key=5db9ecacd3b131726f122eeed53145c2&guest_session_id=${sessionId}`, {
+                fetch(`https://api.themoviedb.org/3/movie/${item.id}/rating?api_key=5db9ecacd3b131726f122eeed53145c2&guest_session_id=${sessionStorage.sessionId}`, {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json;charset=utf-8'
@@ -155,8 +148,7 @@ export default class Item extends Component{
             />
           </div>
         </div>
-      </div>
-    </div>
+      </li>
     )
   }
 }
@@ -167,7 +159,6 @@ Item.defaultProps = {
   genres: [],
   returnMovie: [],
   getGenresName: () => {},
-  sessionId: ''
 };
 
 Item.propTypes = {
@@ -179,7 +170,4 @@ Item.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   returnMovie: PropTypes.array,
   getGenresName: PropTypes.func,
-  sessionId: PropTypes.string
 };
-
-

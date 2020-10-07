@@ -1,3 +1,3 @@
-import HeaderMovie from './header';
+import HeaderMovie from './Header';
 
 export default HeaderMovie;
